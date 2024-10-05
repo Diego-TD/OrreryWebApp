@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  nasa-app:
+    build: .
+    container_name: nasa-app-container
+    ports:
+      - "8080:8080"   # Expose the application port
+    volumes:
+      - ./src:/app/src    # Mount only the source directory for live updates
+      - ./build/libs:/app/build/libs  # Make the built JAR accessible
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    command: >
+      java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+      -jar app.jar
